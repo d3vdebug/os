@@ -1,0 +1,53 @@
+{
+    "name": "DevDebug",
+    "logo": "assets/me.png",
+    "about": "I’m Debmalya — relentlessly curious, detail‑oriented, and driven by clarity. From code to design, I seek elegant solutions that are robust, accessible, and human. Currently experimenting with branding, writeups, and content strategy to make technical work memorable.",
+    "skills": {
+        "core": [
+            "System Kernel & Driver Exploitation",
+            "Advanced Network Traffic Analysis & Anomaly Detection",
+            "Cryptography, Steganography & Covert Channels",
+            "Social Engineering & Digital Infiltration Tactics",
+            "Firmware Reverse Engineering (x86/ARM)"
+        ],
+        "tech": [
+            {"name": "React", "logo": "https://img.icons8.com/plasticine/100/react.png"},
+            {"name": "HTML5", "logo": "https://img.icons8.com/color/48/html-5--v1.png"},
+            {"name": "CSS3", "logo": "https://img.icons8.com/color/48/css3.png"},
+            {"name": "JavaScript", "logo": "https://img.icons8.com/color/48/javascript--v1.png"},
+            {"name": "Next.js", "logo": "https://img.icons8.com/color/48/nextjs.png"},
+            {"name": "Tailwind CSS", "logo": "https://img.icons8.com/color/48/tailwind_css.png"},
+            {"name": "Java", "logo": "https://img.icons8.com/color/48/java-coffee-cup-logo--v1.png"},
+            {"name": "React", "logo": "https://img.icons8.com/plasticine/100/react.png"},
+            {"name": "Next.js", "logo": "https://img.icons8.com/color/48/nextjs.png"},
+            {"name": "Tailwind CSS", "logo": "https://img.icons8.com/color/48/tailwind_css.png"},
+            {"name": "Java", "logo": "https://img.icons8.com/color/48/java-coffee-cup-logo--v1.png"}
+        ],
+        "creative": [
+            {"name": "Figma", "logo": "https://img.icons8.com/color/48/figma--v1.png"},
+            {"name": "Framer", "logo": "https://img.icons8.com/?size=100&id=G7NMjcZM9R01&format=png&color=000000"},
+            {"name": "Photoshop", "logo": "https://img.icons8.com/color/48/adobe-photoshop--v1.png"},
+            {"name": "Illustrator", "logo": "https://img.icons8.com/color/48/adobe-illustrator--v1.png"},
+            {"name": "Notion", "logo": "https://img.icons8.com/?size=100&id=KyMSnxjEVwCr&format=png&color=000000"},
+            {"name": "Spline", "logo": "https://cdn.brandfetch.io/idZ_aiFAYa/w/128/h/128/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"}
+        ]
+    },
+    "blog": [
+        {
+            "title": "Analyzing the E-Corp Kernel Panic Vulnerability",
+            "description": "A deep dive into a critical system flaw.",
+            "url": "https://medium.com/p/1"
+        },
+        {
+            "title": "Bypassing Corporate Firewalls with DNS Tunneling",
+            "description": "Exfiltrating data through overlooked protocols.",
+            "url": "https://medium.com/p/2"
+        },
+        {
+            "title": "The Illusion of Privacy in the Age of Big Data",
+            "description": "How your digital footprint is being monetized.",
+            "url": "https://medium.com/p/3"
+        }
+    ],
+    "contact": "contact@devdebug.in"
+}

@@ -1,0 +1,1493 @@
+/* --- THEME VARIABLES --- */
+:root {
+  --bg-color: #0d110d;
+  --primary-color: #00FF41;
+  --primary-color-dark: #004d00;
+  --primary-color-darker: #0d360d;
+  --primary-color-glow: rgba(0, 255, 65, 0.3);
+  --primary-color-highlight: rgba(0, 255, 65, 0.2);
+  --text-color-dim: #00CC33;
+  --accent-color: #21a6ff;
+  /* Cyan */
+  --danger-color: #FF4500;
+  /* Orange-Red */
+}
+
+/* Set font and ensure the body covers the entire viewport */
+body {
+  /* Hacker Aesthetic: Sans-serif for UI, dark background, neon text */
+  font-family: 'Noto Sans', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--primary-color);
+  overflow: hidden;
+  /* Prevent scrolling of the desktop */
+}
+
+/* Ensure Terminal stays monospace as requested */
+#terminal-output,
+#terminal-input,
+.font-mono {
+  font-family: 'Consolas', 'Monospace', monospace !important;
+}
+
+/* Styling for the draggable/resizable window (Hacker Look) */
+.window {
+  min-width: 200px;
+  min-height: 150px;
+  position: absolute;
+  top: 10vh;
+  left: 15vw;
+
+  /* High-contrast terminal look */
+  background-color: rgba(0, 0, 0, 0.95);
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 0 10px var(--primary-color-glow);
+  border-radius: 8px;
+  /* Rounded corners */
+
+  display: flex;
+  flex-direction: column;
+  /* resize: both; // Removed as we use a custom handle */
+  overflow: hidden;
+}
+
+/* Custom grab handle for resizing from the bottom-right corner */
+.resize-handle {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  bottom: 0;
+  right: 0;
+  cursor: nwse-resize;
+  z-index: 10;
+  background-color: var(--primary-color);
+}
+
+.title-bar {
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+  background-color: var(--primary-color-dark);
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--primary-color);
+  border-radius: 8px 8px 0 0;
+  /* Rounded top corners */
+}
+
+.window-content {
+  flex-grow: 1;
+  overflow: auto;
+  background-color: #000000;
+  color: var(--primary-color);
+}
+
+/* New simplified styles for desktop icons */
+.desktop-icon {
+  position: absolute;
+  cursor: default;
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 5;
+  color: var(--primary-color);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  width: 90px !important;
+  height: 84px !important;
+  text-align: center;
+}
+
+/* Styling for the lucide icon SVG element */
+.desktop-icon i,
+.desktop-icon svg {
+  width: 42px !important;
+  height: 42px !important;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 5px var(--primary-color-glow));
+  transition: transform 0.3s ease;
+  margin-bottom: 4px;
+}
+
+
+.desktop-icon span {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 5px rgba(0, 0, 0, 0.5);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.desktop-icon:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 15px var(--primary-color-glow);
+  transform: translateY(-4px) scale(1.01);
+}
+
+.desktop-icon:hover i,
+.desktop-icon:hover svg {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px var(--primary-color));
+}
+
+.desktop-icon:hover span {
+  background-color: rgba(0, 0, 0, 0.4);
+  text-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Active state for icons */
+.desktop-icon:active {
+  transform: translateY(-2px) scale(0.98);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.desktop-icon.selected {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 15px var(--primary-color-glow);
+}
+
+.desktop-icon.selected span {
+  background-color: var(--primary-color);
+  color: #000;
+  text-shadow: none;
+}
+
+/* --- NEW: Pixelr App Styles --- */
+.pixelr-action-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--text-color-dim);
+  transition: all 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pixelr-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-color-dark);
+  color: var(--primary-color);
+}
+
+.pixelr-tool {
+  border: 2px solid var(--primary-color-dark);
+  transition: all 0.2s;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.pixelr-tool.active {
+  background-color: var(--primary-color) !important;
+  color: black !important;
+  box-shadow: 0 0 10px var(--primary-color-glow);
+}
+
+.pixelr-tool:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Fix: Ensure children don't intercept clicks */
+.pixelr-tool>*,
+.pixelr-action-btn>* {
+  pointer-events: none !important;
+}
+
+.color-swatch-modern {
+  border: 2px solid transparent;
+}
+
+.color-swatch-modern.active-swatch {
+  border-color: white !important;
+  transform: scale(1.1);
+  box-shadow: 0 0 5px white;
+}
+
+#pixelr-custom-color {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: 2px solid var(--primary-color-dark);
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+#pixelr-custom-color:hover {
+  border-color: var(--primary-color);
+  transform: scale(1.1);
+  box-shadow: 0 0 10px var(--primary-color-glow);
+}
+
+#pixelr-custom-color::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+#pixelr-custom-color::-webkit-color-swatch {
+  border: none;
+}
+
+#pixelr-canvas {
+  background-color: #111;
+  background-image:
+    linear-gradient(45deg, #1a1a1a 25%, transparent 25%),
+    linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1a1a1a 75%),
+    linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  image-rendering: pixelated;
+}
+
+
+/* --- MAP APP (LEAFLET) CORE STYLES --- */
+.leaflet-container {
+  background: var(--primary-color-dark) !important;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: none !important;
+  margin-left: 20px !important;
+  margin-bottom: 20px !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: rgba(13, 17, 13, 0.85) !important;
+  color: var(--primary-color) !important;
+  border: 1px solid var(--primary-color-dark) !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  font-size: 18px !important;
+  transition: all 0.2s ease !important;
+  backdrop-filter: blur(8px);
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: var(--primary-color) !important;
+  color: #000 !important;
+  box-shadow: 0 0 15px var(--primary-color-glow) !important;
+  border-color: var(--primary-color) !important;
+  z-index: 1000;
+}
+
+.leaflet-control-zoom-in {
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.leaflet-control-zoom-out {
+  border-radius: 0 0 8px 8px !important;
+  border-top: none !important;
+}
+
+.leaflet-control-select-layers select {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  background-color: #000 !important;
+  color: var(--text-color-dim) !important;
+  border: 1px solid var(--primary-color-dark) !important;
+  padding: 0.6rem 0.5rem !important;
+  border-radius: 0.25rem !important;
+  font-family: 'Noto Sans', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif !important;
+  font-size: 1rem !important;
+  text-align: center;
+  appearance: none;
+}
+
+/* ========================================
+   MAP SEARCH UNIFIED COMPONENT - NEW DESIGN
+   ======================================== */
+
+/* Main Search Container - Floating Panel */
+.map-search-panel {
+  position: absolute !important;
+  top: 10px !important;
+  left: 10px !important;
+  z-index: 1100 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0 !important;
+}
+
+/* Tab Buttons (Toggle Sidebar) */
+.map-search-tabs {
+  display: flex;
+  flex-direction: column;
+  background: rgba(5, 10, 5, 0.95);
+  border: 1px solid var(--primary-color-dark);
+  border-radius: 8px;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.map-search-tab {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--primary-color-dark);
+}
+
+.map-search-tab:last-child {
+  border-bottom: none;
+}
+
+.map-search-tab:hover {
+  background: rgba(0, 255, 65, 0.1);
+  color: var(--primary-color);
+}
+
+.map-search-tab.active {
+  background: var(--primary-color);
+  color: #000;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.map-search-tab svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Search Input Area */
+.map-search-content {
+  display: none;
+  margin-left: 10px;
+  background: rgba(5, 10, 5, 0.95);
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 255, 65, 0.1);
+  overflow: hidden;
+  animation: slideIn 0.25s ease-out;
+}
+
+.map-search-content.active {
+  display: flex;
+  align-items: center;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Address Search Mode */
+.map-search-address {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  height: 96px;
+}
+
+.map-search-address input {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--primary-color-dark);
+  border-radius: 4px;
+  padding: 12px 16px;
+  width: 320px;
+  color: var(--primary-color);
+  font-family: 'Noto Sans', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.map-search-address input::placeholder {
+  color: var(--primary-color-dark);
+  font-style: italic;
+}
+
+.map-search-address input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 10px var(--primary-color-glow);
+}
+
+.map-search-btn {
+  width: 44px;
+  height: 44px;
+  background: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #000;
+}
+
+.map-search-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--primary-color-glow);
+}
+
+.map-search-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Coordinate Search Mode */
+.map-search-coords {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  height: 96px;
+}
+
+.map-coord-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.map-coord-input-group label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-color-dim);
+  letter-spacing: 1px;
+}
+
+.map-coord-input-group input {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--primary-color-dark);
+  border-radius: 4px;
+  padding: 10px 12px;
+  width: 140px;
+  color: var(--primary-color);
+  font-family: 'Consolas', 'Monospace', monospace;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.map-coord-input-group input::placeholder {
+  color: var(--primary-color-dark);
+}
+
+.map-coord-input-group input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-color-glow);
+}
+
+/* Results Dropdown */
+.map-search-results {
+  position: absolute;
+  top: 105%;
+  left: 48px;
+  right: 0;
+  background: rgba(5, 10, 5, 0.98);
+  border: 1px solid var(--primary-color);
+
+  border-radius: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 10000;
+  display: none;
+}
+
+.map-search-results.active {
+  display: block;
+}
+
+.map-search-result-item {
+  padding: 14px 18px;
+  color: var(--text-color-dim);
+  font-family: 'Consolas', 'Monospace', monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+  transition: all 0.15s;
+}
+
+.map-search-result-item:hover {
+  background: rgba(0, 255, 65, 0.15);
+  color: #fff;
+  padding-left: 24px;
+  border-left: 3px solid var(--primary-color);
+}
+
+.map-search-result-item:last-child {
+  border-bottom: none;
+}
+
+/* Hide old leaflet-geosearch entirely */
+.leaflet-control-geosearch,
+.leaflet-control-latlon-search,
+.leaflet-control-search-toggle {
+  display: none !important;
+}
+
+
+
+.search-toggle-btn {
+  width: 44px !important;
+  height: 44px !important;
+  background-color: rgba(10, 15, 10, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid var(--primary-color-dark) !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  color: var(--primary-color) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+}
+
+.search-toggle-btn:hover {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 10px var(--primary-color-glow) !important;
+  transform: translateX(2px);
+}
+
+.search-toggle-btn.active {
+  background-color: var(--primary-color) !important;
+  color: #000 !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 15px var(--primary-color-glow) !important;
+}
+
+.search-toggle-btn i,
+.search-toggle-btn svg {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+/* Visibility management for search bars */
+.map-search-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  display: none !important;
+  /* Force complete removal from layout when hidden */
+  pointer-events: none !important;
+  transform: translateX(-20px) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.map-search-visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  pointer-events: auto !important;
+  transform: translateX(0) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+
+/* --- ENHANCED: GeoSearch Control Styles --- */
+.leaflet-control-geosearch {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  position: absolute !important;
+  top: 20px !important;
+  left: 80px !important;
+  /* Shifted for toggle sidebar */
+  margin: 0 !important;
+  z-index: 1000 !important;
+  width: auto !important;
+}
+
+.leaflet-control-geosearch.bar {
+  transition: all 0.3s ease;
+}
+
+/* --- COORDINATE SEARCH CONTROL --- */
+.leaflet-control-latlon-search {
+  position: absolute !important;
+  top: 20px !important;
+  /* Align with same vertical level */
+  left: 80px !important;
+  /* Offset same as other search bar */
+  margin: 0 !important;
+  z-index: 1000 !important;
+}
+
+.latlon-container {
+  display: flex !important;
+  background-color: rgba(10, 15, 10, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--primary-color-dark) !important;
+  border-left: 4px solid var(--primary-color) !important;
+  border-radius: 4px !important;
+  padding: 8px !important;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6) !important;
+  gap: 10px !important;
+  align-items: center !important;
+}
+
+.latlon-container .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.latlon-container span {
+  font-size: 0.65rem;
+  color: var(--text-color-dim);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.latlon-container input {
+  background: rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid var(--primary-color-darker) !important;
+  color: var(--primary-color) !important;
+  font-family: 'Consolas', 'Monospace', monospace !important;
+  font-size: 0.9rem !important;
+  padding: 6px 10px !important;
+  width: 130px !important;
+  border-radius: 2px !important;
+  outline: none !important;
+  transition: all 0.2s !important;
+}
+
+.latlon-container input:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 5px var(--primary-color-glow) !important;
+}
+
+.latlon-container button {
+  background: var(--primary-color-dark) !important;
+  border: 1px solid var(--primary-color-dark) !important;
+  color: #000 !important;
+  padding: 0 16px !important;
+  height: 38px !important;
+  cursor: pointer !important;
+  border-radius: 2px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  font-size: 0.8rem !important;
+}
+
+.latlon-container button:hover {
+  background: var(--primary-color) !important;
+  box-shadow: 0 0 15px var(--primary-color-glow) !important;
+  transform: translateY(-1px) !important;
+}
+
+.latlon-container button svg {
+  width: 18px !important;
+  height: 18px !important;
+  stroke: black !important;
+  stroke-width: 2.5 !important;
+}
+
+/* Hide the search icon button - we'll use a cleaner approach */
+.leaflet-control-geosearch a.glass {
+  display: none !important;
+}
+
+
+/* Enhanced Search Form Container - Terminal Style */
+.leaflet-control-geosearch form {
+  background-color: rgba(10, 15, 10, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--primary-color-dark) !important;
+  border-left: 4px solid var(--primary-color) !important;
+  /* Prompt visual */
+  border-radius: 4px !important;
+  height: 52px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6), 0 0 10px rgba(0, 255, 65, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  min-width: 380px !important;
+  position: relative !important;
+}
+
+/* Add a Search Icon */
+.leaflet-control-geosearch form::before {
+  content: '' !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300FF41' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 20px !important;
+  height: 20px !important;
+  margin-left: 16px !important;
+  margin-right: 8px !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 2px var(--primary-color));
+}
+
+.leaflet-control-geosearch form:hover,
+.leaflet-control-geosearch.active form {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.25) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Enhanced Search Input */
+.leaflet-control-geosearch form input {
+  height: 100% !important;
+  padding: 0 12px 0 0 !important;
+  background-color: transparent !important;
+  color: var(--primary-color) !important;
+  font-size: 1.1rem !important;
+  font-family: 'Consolas', 'Monospace', monospace !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px !important;
+  border: none !important;
+  outline: none !important;
+  flex: 1 !important;
+  margin: 0 !important;
+  text-shadow: 0 0 2px rgba(0, 255, 65, 0.3) !important;
+}
+
+.leaflet-control-geosearch form input::placeholder {
+  color: var(--primary-color-dark) !important;
+  opacity: 0.7 !important;
+  font-style: italic !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.leaflet-control-geosearch form input:focus::placeholder {
+  opacity: 0.3 !important;
+}
+
+
+/* Enhanced Results Dropdown */
+.leaflet-control-geosearch .results {
+  background-color: rgba(5, 10, 5, 0.98) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--primary-color) !important;
+  border-top: none !important;
+  border-radius: 4px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 65, 0.15) !important;
+  max-height: 400px !important;
+  overflow-y: auto !important;
+  margin-top: 8px !important;
+  /* Separation gap */
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 10000 !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+}
+
+.leaflet-control-geosearch .results>* {
+  color: var(--text-color-dim) !important;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.15) !important;
+  padding: 16px 20px !important;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+  font-size: 0.95rem !important;
+  display: flex !important;
+  align-items: center !important;
+  font-family: 'Consolas', 'Monospace', monospace !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Hover Effect for Results */
+.leaflet-control-geosearch .results>*:hover {
+  background-color: rgba(0, 255, 65, 0.1) !important;
+  color: #fff !important;
+  /* White text on hover for contrast */
+  text-shadow: 0 0 8px var(--primary-color);
+  padding-left: 28px !important;
+  /* Slide content */
+  border-left: 4px solid var(--primary-color) !important;
+}
+
+/* Active/Selected State simulation */
+.leaflet-control-geosearch .results>*.active {
+  background-color: rgba(0, 255, 65, 0.2) !important;
+  border-left: 4px solid var(--primary-color) !important;
+}
+
+.leaflet-control-geosearch .results>*:last-child {
+  border-bottom: none !important;
+}
+
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure the form container allows results to show */
+.leaflet-control-geosearch form {
+  position: relative !important;
+}
+
+/* Fix for geosearch results container */
+.leaflet-control-geosearch.bar .results {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  width: 100% !important;
+  z-index: 10000 !important;
+}
+
+/* Ensure results are visible when they have content */
+.leaflet-control-geosearch .results:not(:empty) {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Fix for any nested result containers */
+.leaflet-control-geosearch .results>div,
+.leaflet-control-geosearch .results>a,
+.leaflet-control-geosearch .results>button {
+  display: block !important;
+  width: 100% !important;
+  text-align: left !important;
+}
+
+/* Ensure the control container doesn't clip results */
+.leaflet-control-geosearch {
+  overflow: visible !important;
+}
+
+.leaflet-control-geosearch.bar {
+  overflow: visible !important;
+}
+
+/* Enhanced Clear Button - Moved Inside */
+.leaflet-control-geosearch button.reset {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  font-size: 0 !important;
+  height: 100% !important;
+  /* Match form height */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: 0 !important;
+  min-width: 40px !important;
+  overflow: visible !important;
+  z-index: 10 !important;
+}
+
+.leaflet-control-geosearch button.reset:hover {
+  background-color: transparent !important;
+  /* No background change on hover */
+  transform: scale(1.1) !important;
+}
+
+.leaflet-control-geosearch button.reset::before {
+  content: '✕' !important;
+  color: var(--text-color-dim) !important;
+  font-size: 1.2rem !important;
+  line-height: 1 !important;
+  font-weight: bold !important;
+}
+
+.leaflet-control-geosearch button.reset:hover::before {
+  color: var(--danger-color) !important;
+  text-shadow: 0 0 10px var(--danger-color);
+}
+
+
+
+/* Enhanced Custom Search History */
+.devdebug-search-history {
+  font-family: 'Consolas', 'Monospace', monospace;
+  background-color: rgba(0, 0, 0, 0.95) !important;
+  backdrop-filter: blur(15px) !important;
+  border: 1px solid var(--primary-color-dark) !important;
+  border-top: none !important;
+  border-radius: 0 0 6px 6px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 255, 65, 0.1) !important;
+  animation: fadeInDown 0.2s ease-out !important;
+}
+
+.devdebug-history-title {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.75rem;
+  padding: 10px 14px;
+  color: var(--text-color-dim);
+  opacity: 0.8;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.15);
+  font-weight: bold;
+}
+
+.devdebug-history-item {
+  font-size: 0.9rem;
+  padding: 12px 14px;
+  color: var(--text-color-dim);
+  border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.devdebug-history-item:hover {
+  background-color: rgba(0, 255, 65, 0.15) !important;
+  color: var(--primary-color) !important;
+  transform: translateX(2px) !important;
+  box-shadow: 0 0 8px rgba(0, 255, 65, 0.2) !important;
+}
+
+.devdebug-history-item:last-child {
+  border-bottom: none;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background-color: var(--primary-color-darker) !important;
+  color: var(--text-color-dim) !important;
+  border: 1px solid var(--primary-color-dark);
+  border-radius: 0.25rem !important;
+  box-shadow: 0 0 5px rgba(0, 255, 65, 0.2);
+}
+
+.leaflet-popup-close-button {
+  color: var(--primary-color) !important;
+}
+
+/* NEW: Style for live coordinate display */
+.leaflet-control-coordinates {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  border: 1px solid var(--primary-color-dark) !important;
+  border-radius: 4px !important;
+  color: var(--text-color-dim) !important;
+  padding: 5px 10px;
+  font-family: noto-sans, 'Segoe UI', roboto, 'helvetica neue', arial, sans-serif !important;
+  font-size: 0.8rem;
+  /* text-xs */
+}
+
+/* Linux-style window control buttons */
+.close-btn,
+.minimize-btn,
+.maximize-btn {
+  width: 15px !important;
+  height: 15px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 12px !important;
+  font-weight: bold !important;
+  margin: 0 2px !important;
+  transition: all 0.2s ease !important;
+}
+
+.close-btn {
+  background-color: #FF605C !important;
+  /* Red */
+  color: #FFF !important;
+}
+
+.close-btn:hover {
+  background-color: #E74C3C !important;
+  transform: scale(1.1) !important;
+}
+
+.minimize-btn {
+  background-color: #9bff18 !important;
+  /* Orange */
+  color: #000 !important;
+}
+
+.minimize-btn:hover {
+  background-color: #007400 !important;
+  transform: scale(1.1) !important;
+}
+
+.maximize-btn {
+  background-color: #c7ca00 !important;
+  /* Green */
+  color: #000 !important;
+}
+
+.maximize-btn:hover {
+  background-color: #c9ac08 !important;
+  transform: scale(1.1) !important;
+}
+
+.window.maximized .resize-handle {
+  display: none;
+}
+
+/* --- CUSTOM SCROLLBAR STYLES (The Fix) --- */
+
+/* Target all potential scrolling areas within the window (content and nested children) */
+.window-content,
+#chat-area,
+#browser-content-area,
+textarea,
+#start-menu .overflow-y-auto {
+  /* Firefox Scrollbar Support */
+  scrollbar-color: var(--primary-color) #000000;
+  /* thumb track */
+  scrollbar-width: thin;
+}
+
+/* Webkit (Chrome, Safari, Edge) Scrollbar Styles */
+.window-content::-webkit-scrollbar,
+#chat-area::-webkit-scrollbar,
+#browser-content-area::-webkit-scrollbar,
+textarea::-webkit-scrollbar,
+#start-menu .overflow-y-auto::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.window-content::-webkit-scrollbar-track,
+#chat-area::-webkit-scrollbar-track,
+#browser-content-area::-webkit-scrollbar-track,
+textarea::-webkit-scrollbar-track,
+#start-menu .overflow-y-auto::-webkit-scrollbar-track {
+  background: var(--primary-color-darker);
+  border-left: 1px solid var(--primary-color-dark);
+}
+
+.window-content::-webkit-scrollbar-thumb,
+#chat-area::-webkit-scrollbar-thumb,
+#browser-content-area::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb,
+#start-menu .overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color-dark);
+}
+
+.window-content::-webkit-scrollbar-thumb:hover,
+#chat-area::-webkit-scrollbar-thumb:hover,
+#browser-content-area::-webkit-scrollbar-thumb:hover,
+textarea::-webkit-scrollbar-thumb:hover,
+#start-menu .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-color-dim);
+}
+
+/* --- END SCROLLBAR STYLES --- */
+
+/* Styles specific to the Snake Game Canvas */
+#snake-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000;
+  position: relative;
+}
+
+#snake-canvas {
+  background-color: #000;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 0 20px var(--primary-color-glow);
+  image-rendering: pixelated;
+  width: 420px;
+  height: 420px;
+  max-width: 95%;
+  max-height: 95%;
+  transition: box-shadow 0.3s ease;
+}
+
+#snake-canvas:hover {
+  box-shadow: 0 0 25px var(--primary-color-glow), inset 0 0 25px rgba(0, 255, 65, 0.15);
+}
+
+/* Snake game status badge animations */
+#game-status {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+/* Snake game score display */
+#snake-score {
+  transition: transform 0.2s ease;
+}
+
+#snake-score:empty::before {
+  content: '0';
+}
+
+/* Styles specific to the Tennis Game Canvas */
+#tennis-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+#pong-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* --- NEW: Volume Slider Hover Effect --- */
+#volume-slider {
+  width: 0;
+  opacity: 0;
+  transition: width 0.2s ease-out, opacity 0.2s ease-out, margin-left 0.2s ease-out;
+  margin-left: 0;
+}
+
+#volume-control-container:hover #volume-slider {
+  width: 80px;
+  /* w-20 */
+  opacity: 1;
+  margin-left: 8px;
+  /* space-x-2 */
+}
+
+/* --- NEW: Taskbar App Tray --- */
+.taskbar-app-icon {
+  border-bottom: 2px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.taskbar-app-icon.active {
+  background-color: var(--primary-color-darker);
+  border-bottom-color: var(--primary-color);
+}
+
+.taskbar-app-icon:hover {
+  background-color: var(--primary-color-darker);
+  border-bottom-color: var(--primary-color);
+}
+
+/* --- NEW: Start Menu Styles --- */
+#start-menu {
+  bottom: 40px;
+  /* Height of the taskbar */
+  left: 16px;
+  /* px-4 of the body */
+  width: 350px;
+  height: 500px;
+  margin-bottom: 10px;
+  background-color: rgba(15, 23, 42, 0.9);
+  /* bg-slate-900 with opacity */
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--primary-color-dark);
+
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.start-menu-item {
+  transition: background-color 0.15s ease-in-out;
+}
+
+.start-menu-item:hover {
+  background-color: var(--primary-color-highlight);
+}
+
+/* --- NEW: Start Button Icon --- */
+.start-icon {
+  width: 24px;
+  height: 24px;
+  background-color: var(--primary-color);
+  -webkit-mask: url('../assets/SVG/icon.svg') no-repeat center;
+  mask: url('../assets/SVG/icon.svg') no-repeat center;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+#start-btn:hover .start-icon {
+  background-color: #fff;
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 5px var(--primary-color));
+}
+
+.start-menu-footer-btn {
+  transition: background-color 0.15s ease-in-out;
+}
+
+/* --- NEW: Calendar Styles --- */
+#calendar-popup {
+  bottom: 40px;
+  /* Height of the taskbar */
+  right: 16px;
+  /* px-4 of the body */
+  width: 300px;
+  background-color: rgba(15, 23, 42, 0.9);
+  /* bg-slate-900 with opacity */
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--primary-color-dark);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  border-radius: 1rem;
+  margin-bottom: 10px;
+}
+
+.calendar-day {
+  transition: background-color 0.15s ease-in-out;
+}
+
+.calendar-day:hover {
+  background-color: var(--primary-color-highlight);
+}
+
+.calendar-day.today {
+  background-color: var(--primary-color-dark);
+  border: 1px solid var(--primary-color);
+}
+
+/* --- NEW: Auth Screen --- */
+#auth-btn {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#auth-btn:hover {
+  background-color: transparent !important;
+  color: var(--primary-color) !important;
+}
+
+/* --- NEW: Blinking Cursor for Boot Sequence --- */
+.blinking-cursor::after {
+  content: '_';
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* --- NEW: Settings App Styles --- */
+.settings-tab-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s, color 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.settings-tab-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.settings-tab-btn.active {
+  background-color: var(--primary-color-dark);
+  color: var(--primary-color);
+  font-weight: bold;
+  border-left-color: var(--primary-color);
+}
+
+.settings-action-btn {
+  background-color: var(--primary-color-dark);
+  border: 1px solid var(--primary-color-dark);
+  transition: background-color 0.2s;
+}
+
+.settings-action-btn:hover {
+  background-color: var(--primary-color-darker);
+  border-color: var(--primary-color);
+}
+
+/* --- NEW: Glitch Effect --- */
+@keyframes glitch {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  20% {
+    transform: translate(-1px, 1px);
+  }
+
+  40% {
+    transform: translate(-1px, -1px);
+  }
+
+  60% {
+    transform: translate(1px, 1px);
+  }
+
+  80% {
+    transform: translate(1px, -1px);
+  }
+}
+
+.glitch-effect {
+  animation: glitch 0.2s infinite;
+  text-shadow: -2px 0 var(--danger-color), 2px 0 var(--accent-color);
+}
+
+/* --- CRT Scanline & Flicker Effects --- */
+.scanlines {
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 0.3));
+  background-size: 100% 4px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3001;
+  /* Above boot content */
+  pointer-events: none;
+  animation: scrollLines 10s linear infinite;
+}
+
+@keyframes scrollLines {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+.crt-flicker {
+  animation: flicker 0.15s infinite;
+  pointer-events: none;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.97;
+  }
+
+  5% {
+    opacity: 0.95;
+  }
+
+  10% {
+    opacity: 0.9;
+  }
+
+  15% {
+    opacity: 0.95;
+  }
+
+  20% {
+    opacity: 0.99;
+  }
+
+  25% {
+    opacity: 0.95;
+  }
+
+  30% {
+    opacity: 0.9;
+  }
+
+  35% {
+    opacity: 0.96;
+  }
+
+  40% {
+    opacity: 0.98;
+  }
+
+  45% {
+    opacity: 0.95;
+  }
+
+  50% {
+    opacity: 0.99;
+  }
+
+  55% {
+    opacity: 0.93;
+  }
+
+  60% {
+    opacity: 0.9;
+  }
+
+  65% {
+    opacity: 0.96;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0.97;
+  }
+
+  80% {
+    opacity: 0.95;
+  }
+
+  85% {
+    opacity: 0.92;
+  }
+
+  90% {
+    opacity: 0.96;
+  }
+
+  95% {
+    opacity: 0.99;
+  }
+
+  100% {
+    opacity: 0.94;
+  }
+}
