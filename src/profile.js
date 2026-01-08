@@ -10,7 +10,7 @@ export async function initializeDevDebugWindow(windowElement, system) {
 
     let contentData;
     try {
-        const response = await fetch('/content.json');
+        const response = await fetch(`${import.meta.env.BASE_URL}content.json`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
