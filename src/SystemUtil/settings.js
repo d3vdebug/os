@@ -81,12 +81,12 @@ export function initializeSettingsWindow(windowElement, system) {
                                       <span class="text-[10px] uppercase font-bold tracking-wider opacity-70">Solid</span>
                                   </button>
                                   <!-- Image backgrounds -->
-                                  <button data-bg="devdebugBG01.jpg" class="bg-option relative aspect-square rounded-lg border transition-all bg-cover bg-center hover:-translate-y-1" style="background-image: url('assets/BG/devdebugBG01.jpg');" title="Digital Rain">
+                                  <button data-bg="devdebugBG01.jpg" class="bg-option relative aspect-square rounded-lg border transition-all bg-cover bg-center hover:-translate-y-1" style="background-image: url('${import.meta.env.BASE_URL}assets/BG/devdebugBG01.jpg');" title="Digital Rain">
                                       <div class="absolute inset-x-0 bottom-0 bg-black/70 py-1 text-center">
                                           <span class="text-[10px] uppercase font-bold tracking-wider text-white">Rain</span>
                                       </div>
                                   </button>
-                                  <button data-bg="devdebugBG02.jpg" class="bg-option relative aspect-square rounded-lg border transition-all bg-cover bg-center hover:-translate-y-1" style="background-image: url('assets/BG/devdebugBG02.jpg');" title="Cyber City">
+                                  <button data-bg="devdebugBG02.jpg" class="bg-option relative aspect-square rounded-lg border transition-all bg-cover bg-center hover:-translate-y-1" style="background-image: url('${import.meta.env.BASE_URL}assets/BG/devdebugBG02.jpg');" title="Cyber City">
                                       <div class="absolute inset-x-0 bottom-0 bg-black/70 py-1 text-center">
                                           <span class="text-[10px] uppercase font-bold tracking-wider text-white">City</span>
                                       </div>
@@ -465,7 +465,7 @@ export function initializeSettingsWindow(windowElement, system) {
                 document.body.style.backgroundColor = '';
                 localStorage.setItem('desktopBackground', 'none');
             } else {
-                document.body.style.backgroundImage = `url('assets/BG/${bg}')`;
+                document.body.style.backgroundImage = `url('${import.meta.env.BASE_URL}assets/BG/${bg}')`;
                 document.body.style.backgroundSize = 'cover';
                 document.body.style.backgroundPosition = 'center';
                 document.body.style.backgroundRepeat = 'no-repeat';

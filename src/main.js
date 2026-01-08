@@ -1266,7 +1266,7 @@ function initAuthScreen() {
             // Apply saved background after desktop is shown
             const savedBg = localStorage.getItem('desktopBackground');
             if (savedBg && savedBg !== 'none' && savedBg !== 'solid') {
-                document.body.style.backgroundImage = `url('assets/BG/${savedBg}')`;
+                document.body.style.backgroundImage = `url('${import.meta.env.BASE_URL}assets/BG/${savedBg}')`;
                 document.body.style.backgroundSize = 'cover';
                 document.body.style.backgroundPosition = 'center';
                 document.body.style.backgroundRepeat = 'no-repeat';
