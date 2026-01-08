@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS Desktop Simulation</title>
+    <link rel="icon" href="/os/favicon.ico" type="image/x-icon">
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for clean, simple visuals -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- NEW: Load Leaflet.js for the Map App -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- NEW: Load Leaflet Geocoder for search functionality -->
+    <!-- UPDATED: Using leaflet-geosearch for a better search experience -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.css" />
+    <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
+
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+
+
+    </style>
+  <script type="module" crossorigin src="/os/assets/index-DGPGyprH.js"></script>
+  <link rel="stylesheet" crossorigin href="/os/assets/index-DYtQZtY9.css">
+</head>
+
+<body class="h-screen w-screen overflow-hidden p-1.5">
+
+    <!-- BOOT SEQUENCE SCREEN -->
+    <div id="boot-screen"
+        class="fixed inset-0 z-[3000] flex flex-col items-center justify-center bg-black p-4 font-mono select-none">
+        <div class="scanlines"></div>
+        <!-- ASCII Logo Container -->
+        <pre id="boot-logo" class="text-xs sm:text-sm md:text-base font-bold leading-none text-center mb-8"
+            style="color: var(--primary-color); text-shadow: 0 0 10px var(--primary-color-glow);"></pre>
+
+        <!-- Terminal Output Area -->
+        <div class="w-full max-w-3xl h-64 flex-none flex flex-col justify-end mb-4 overflow-hidden relative"
+            style="mask-image: linear-gradient(to bottom, transparent, black 10%); -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%);">
+            <div id="boot-text"
+                class="w-full font-mono text-xs sm:text-sm whitespace-pre-wrap break-words text-left space-y-1 pb-2">
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full max-w-3xl">
+            <div class="flex justify-between items-end mb-2">
+                <span id="boot-status" class="text-xs uppercase tracking-widest font-bold"
+                    style="color: var(--text-color-dim);">System Initialization</span>
+                <span id="boot-percent" class="text-xs font-mono font-bold"
+                    style="color: var(--primary-color);">0%</span>
+            </div>
+            <div
+                class="w-full h-1.5 bg-gray-900 overflow-hidden border border-gray-800 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
+                <div id="boot-progress" class="h-full w-0 transition-all duration-75 ease-out relative"
+                    style="background-color: var(--primary-color); box-shadow: 0 0 10px var(--primary-color);"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="auth-screen" class="fixed inset-0 z-[2000] flex flex-col items-center justify-center p-4 hidden"
+        style="background-color: var(--bg-color); opacity: 0; transition: opacity 0.5s ease-in;">
+        <!-- New Login Panel -->
+        <div class="w-full max-w-sm text-center"
+            style="background-color: rgba(0,0,0,0.9); border: 2px solid var(--primary-color); border-radius: 8px; box-shadow: 0 0 20px var(--primary-color-glow);">
+            <!-- Header -->
+            <div class="p-3"
+                style="background-color: var(--primary-color-dark); border-radius: 8px 8px 0 0; border-bottom: 1px solid var(--primary-color);">
+                <h1 class="text-lg font-bold tracking-widest" style="color: var(--primary-color);">SYSTEM ACCESS</h1>
+            </div>
+            <!-- Body -->
+            <div class="p-8 flex flex-col items-center space-y-4">
+                <div class="w-24 h-24 flex items-center justify-center rounded-full"
+                    style="border: 3px solid var(--primary-color); background-color: #000;">
+                    <img src="/os/assets/me-C79OPNM2.png" alt="DevDebug Avatar" class="w-24 h-24 rounded-full">
+                </div>
+                <h2 class="text-2xl font-bold">DevDebug</h2>
+                <p class="text-sm" style="color: var(--text-color-dim);">Administrator</p>
+                <button id="auth-btn" class="w-full py-3 text-lg font-bold mt-4"
+                    style="background-color: var(--primary-color); color: #000; border: 2px solid var(--primary-color); border-radius: 8px;">
+                    GRANT ACCESS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DESKTOP CONTAINER -->
+    <div id="desktop" class="h-full w-full relative hidden" style="background-color: transparent;">
+
+        <!-- ICONS -->
+
+        <!-- GROUP: SYSTEM -->
+        <!-- DevDebug Profile -->
+        <div id="icon-devdebug-profile" data-app-id="devdebug-profile" class="desktop-icon"
+            style="top: 20px; left: 20px;">
+            <i data-lucide="user"></i>
+            <span>DevDebug</span>
+        </div>
+
+        <!-- File Explorer -->
+        <div id="icon-files" data-app-id="files" class="desktop-icon" style="top: 120px; left: 20px;">
+            <i data-lucide="folder-closed"></i>
+            <span>Files</span>
+        </div>
+
+        <!-- Terminal -->
+        <div id="icon-terminal" data-app-id="terminal" class="desktop-icon" style="top: 220px; left: 20px;">
+            <i data-lucide="terminal"></i>
+            <span>Terminal</span>
+        </div>
+
+        <!-- Settings -->
+        <div id="icon-settings" data-app-id="settings" class="desktop-icon" style="top: 320px; left: 20px;">
+            <i data-lucide="settings"></i>
+            <span>Settings</span>
+        </div>
+
+        <!-- SysMon (Process Explorer) -->
+        <div id="icon-sysmon" data-app-id="sysmon" class="desktop-icon" style="top: 420px; left: 20px;">
+            <i data-lucide="activity"></i>
+            <span>Processes</span>
+        </div>
+
+        <!-- Map -->
+        <div id="icon-map" data-app-id="map" class="desktop-icon" style="top: 520px; left: 20px;">
+            <i data-lucide="map"></i>
+            <span>Map</span>
+        </div>
+
+
+        <!-- GROUP: APPS -->
+        <!-- Browser -->
+        <div id="icon-browser" data-app-id="browser" class="desktop-icon" style="top: 20px; left: 120px;">
+            <i data-lucide="compass"></i>
+            <span>Browser</span>
+        </div>
+
+        <!-- Mr Robot (Chatbot) -->
+        <div id="icon-robot" data-app-id="robot" class="desktop-icon" style="top: 120px; left: 120px;">
+            <i data-lucide="bot-message-square"></i>
+            <span>Mr Robot</span>
+        </div>
+
+        <!-- Calculator -->
+        <div id="icon-calculator" data-app-id="calculator" class="desktop-icon" style="top: 220px; left: 120px;">
+            <i data-lucide="calculator"></i>
+            <span>Calculator</span>
+        </div>
+
+        <!-- Pixelr -->
+        <div id="icon-pixelr" data-app-id="pixelr" class="desktop-icon" style="top: 320px; left: 120px;">
+            <i data-lucide="paintbrush"></i>
+            <span>Pixelr</span>
+        </div>
+
+        <!-- Encryptr -->
+        <div id="icon-encryptr" data-app-id="encryptr" class="desktop-icon" style="top: 420px; left: 120px;">
+            <i data-lucide="lock-open"></i>
+            <span>Encryptr</span>
+        </div>
+
+        <!-- Notepad -->
+        <div id="icon-notes" data-app-id="notes" class="desktop-icon" style="top: 520px; left: 120px;">
+            <i data-lucide="sticky-note"></i>
+            <span>Notepad</span>
+        </div>
+
+
+        <!-- GROUP: GAMES (Right Side) -->
+        <!-- Snake -->
+        <div id="icon-snake" data-app-id="snake" class="desktop-icon" style="top: 20px; right: 20px;">
+            <i data-lucide="line-squiggle"></i>
+            <span>Snake</span>
+        </div>
+
+        <!-- Pong -->
+        <div id="icon-terminal-tennis" data-app-id="pong" class="desktop-icon" style="top: 120px; right: 20px;">
+            <i data-lucide="eclipse"></i>
+            <span>Pong</span>
+        </div>
+
+        <!-- TicTacToe -->
+        <div id="icon-tictactoe" data-app-id="tictactoe" class="desktop-icon" style="top: 220px; right: 20px;">
+            <i data-lucide="grid-3x3"></i>
+            <span>TicTacToe</span>
+        </div>
+
+
+        <!-- GROUP: UTILITY -->
+        <!-- Bin -->
+        <div id="icon-bin" data-app-id="bin" class="desktop-icon" style="bottom: 60px; right: 20px;">
+            <i data-lucide="trash"></i>
+            <span>Bin</span>
+        </div>
+
+    </div>
+
+    <!-- Background Music -->
+    <audio id="background-music" loop>
+        <!-- Royalty-free "hacker" themed music -->
+        <source src="/os/assets/theme01-BNKdVuyV.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Hover Sound -->
+    <audio id="hover-sound" preload="auto">
+        <source src="/os/assets/hover-D1ayb5lb.wav" type="audio/wav">
+    </audio>
+
+    <!-- Click Sound -->
+    <audio id="click-sound" preload="auto">
+        <source src="/os/assets/click-st-BhucffPt.wav" type="audio/wav">
+    </audio>
+
+    <!-- TASKBAR (Bottom - UPDATED FOR DEVDEBUG OS) -->
+    <div id="taskbar"
+        class="fixed bottom-0 left-0 right-0 h-10 bg-black border-t-2 z-50 flex items-center justify-between px-4 shadow-2xl hidden"
+        style="border-color: var(--primary-color);">
+        <div class="flex items-center h-full space-x-2">
+            <button id="start-btn" title="Start"
+                class="h-full px-3 transition-colors hover:bg-gray-900 flex items-center justify-center">
+                <div class="start-icon"></div>
+            </button>
+            <span class="text-sm font-bold tracking-widest" style="color: var(--primary-color);">DEVDEBUG OS</span>
+        </div>
+
+        <!-- App Tray for Open Windows -->
+        <div id="app-tray" class="flex-grow flex items-center justify-center h-full px-4 space-x-1">
+            <!-- Open app icons will be injected here -->
+        </div>
+
+        <div id="system-tray" class="flex items-center h-full px-2 space-x-4 cursor-pointer">
+            <div id="volume-control-container" class="flex items-center h-full">
+                <button id="music-mute-btn" title="Mute/Unmute"
+                    class="transition-opacity hover:opacity-75 p-1"></button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01"
+                    class="h-1.5 rounded-lg appearance-none cursor-pointer"
+                    style="background-color: var(--primary-color-dark);">
+            </div>
+            <div class="text-xs text-right leading-tight" style="color: var(--text-color-dim);">
+                <span id="current-time-display" class="block"></span>
+                <span id="current-date-display" class="block"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Right-Click Context Menu -->
+    <div id="context-menu" class="hidden absolute z-[1000] p-1"
+        style="background-color: var(--primary-color-darker); border: 1px solid var(--primary-color); border-radius: 5px;">
+        <ul id="context-menu-items">
+            <!-- Items will be injected by JS -->
+        </ul>
+    </div>
+
+    <!-- Start Menu -->
+    <div id="start-menu" class="hidden absolute z-[900] flex flex-col">
+        <!-- App List -->
+        <div class="flex-grow p-2 overflow-y-auto">
+            <h3 class="p-2 text-sm font-bold" style="color: var(--text-color-dim);">All Apps</h3>
+            <ul id="start-menu-apps" class="space-y-1">
+                <!-- Apps will be injected here -->
+            </ul>
+        </div>
+        <!-- Footer -->
+        <div class="flex-shrink-0 p-2 flex justify-between items-center"
+            style="background-color: rgba(0,0,0,0.3); border-top: 1px solid var(--primary-color-dark);">
+            <div id="start-menu-profile-btn"
+                class="flex items-center space-x-3 p-2 rounded start-menu-item cursor-pointer">
+                <i data-lucide="user-circle" class="w-8 h-8"></i>
+                <span class="font-bold">DevDebug</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button id="start-menu-restart" title="Restart"
+                    class="p-2 rounded start-menu-footer-btn hover:bg-gray-700"><i data-lucide="rotate-ccw"
+                        class="w-5 h-5"></i></button>
+                <button id="start-menu-shutdown" title="Shutdown"
+                    class="p-2 rounded start-menu-footer-btn hover:bg-red-900"><i data-lucide="power"
+                        class="w-5 h-5"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar Popup -->
+    <div id="calendar-popup" class="hidden absolute z-[900] flex flex-col">
+        <!-- Calendar Header -->
+        <div class="flex justify-between items-center p-2" style="border-bottom: 1px solid var(--primary-color-dark);">
+            <button id="calendar-prev-month" title="Previous Month"
+                class="p-1 rounded start-menu-footer-btn hover:bg-gray-700"><i data-lucide="chevron-left"
+                    class="w-5 h-5"></i></button>
+            <div id="calendar-month-year" class="font-bold"></div>
+            <button id="calendar-next-month" title="Next Month"
+                class="p-1 rounded start-menu-footer-btn hover:bg-gray-700"><i data-lucide="chevron-right"
+                    class="w-5 h-5"></i></button>
+        </div>
+        <!-- Calendar Body -->
+        <div id="calendar-body" class="grid grid-cols-7 text-center p-2 gap-1">
+            <!-- Day headers and dates will be injected here -->
+        </div>
+    </div>
+
+</body>
+
+</html>
