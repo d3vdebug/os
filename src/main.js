@@ -1263,7 +1263,8 @@ function initAuthScreen() {
             // Show the desktop and taskbar
             desktop.classList.remove('hidden');
             taskbar.classList.remove('hidden');
-            // Apply saved background after desktop is shown
+            
+            // Apply saved background or set default
             const savedBg = localStorage.getItem('desktopBackground');
             if (savedBg && savedBg !== 'none' && savedBg !== 'solid') {
                 document.body.style.backgroundImage = `url('${import.meta.env.BASE_URL}assets/BG/${savedBg}')`;
@@ -1276,6 +1277,13 @@ function initAuthScreen() {
                     document.body.style.backgroundColor = savedBgColor;
                     document.body.style.backgroundImage = 'none';
                 }
+            } else {
+                // Set default background (City)
+                document.body.style.backgroundImage = `url('${import.meta.env.BASE_URL}assets/BG/devdebugBG02.jpg')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                document.body.style.backgroundRepeat = 'no-repeat';
+                localStorage.setItem('desktopBackground', 'devdebugBG02.jpg');
             }
             setTimeout(() => authScreen.remove(), ANIMATION_CONSTANTS.FADE_DURATION);
         }, ANIMATION_CONSTANTS.AUTH_DELAY);
